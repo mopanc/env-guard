@@ -1,0 +1,45 @@
+{
+  "name": "env-guard",
+  "version": "1.0.0",
+  "description": "Type-safe environment variable validation. Schema-based, fails fast, zero dependencies.",
+  "author": "Jorge Morais",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": [
+    "env",
+    "environment",
+    "validation",
+    "type-safe",
+    "config",
+    "dotenv",
+    "schema"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mopanc/env-guard"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
