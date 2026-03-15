@@ -23,31 +23,33 @@ export function validateField(
     return field.default
   }
 
+  const value = raw as string
+
   switch (field.type) {
     case 'string':
-      return raw
+      return value
 
     case 'number': {
-      const num = Number(raw)
+      const num = Number(value)
       if (isNaN(num)) {
-        issues.push({ key, message: `expected a number, got "${raw}"` })
+        issues.push({ key, message: `expected a number, got "${value}"` })
         return undefined
       }
       return num
     }
 
     case 'boolean': {
-      const lower = raw!.toLowerCase()
+      const lower = value.toLowerCase()
       if (['true', '1', 'yes'].includes(lower)) return true
       if (['false', '0', 'no'].includes(lower)) return false
-      issues.push({ key, message: `expected a boolean (true/false/1/0/yes/no), got "${raw}"` })
+      issues.push({ key, message: `expected a boolean (true/false/1/0/yes/no), got "${value}"` })
       return undefined
     }
 
     case 'port': {
-      const port = Number(raw)
+      const port = Number(value)
       if (isNaN(port) || !Number.isInteger(port) || port < 1 || port > 65535) {
-        issues.push({ key, message: `expected a valid port (1-65535), got "${raw}"` })
+        issues.push({ key, message: `expected a valid port (1-65535), got "${value}"` })
         return undefined
       }
       return port
@@ -55,25 +57,25 @@ export function validateField(
 
     case 'url': {
       try {
-        new URL(raw!)
-        return raw
+        new URL(value)
+        return value
       } catch {
-        issues.push({ key, message: `expected a valid URL, got "${raw}"` })
+        issues.push({ key, message: `expected a valid URL, got "${value}"` })
         return undefined
       }
     }
 
     case 'enum': {
-      if (!field.values.includes(raw!)) {
-        issues.push({ key, message: `expected one of [${field.values.join(', ')}], got "${raw}"` })
+      if (!field.values.includes(value)) {
+        issues.push({ key, message: `expected one of [${field.values.join(', ')}], got "${value}"` })
         return undefined
       }
-      return raw
+      return value
     }
 
     case 'array': {
       const separator = field.separator ?? ','
-      return raw!.split(separator).map(s => s.trim()).filter(Boolean)
+      return value.split(separator).map(s => s.trim()).filter(Boolean)
     }
 
     default:
